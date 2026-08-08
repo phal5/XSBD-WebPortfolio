@@ -1,12 +1,12 @@
 \---
 
-title: "Fallen Knight"
+title: "게임 이름"
 
-summary: "자율적으로 행동하는 동물들을 구슬려 공장을 움직이는 게임"
+summary: "게임 내용"
 
-date: "2024.08.01 - 2024.11.13"
+date: "개발 기간"
 
-category: "games"
+category: "games/collaboration/lab 셋 중 하나"
 
 \---
 
