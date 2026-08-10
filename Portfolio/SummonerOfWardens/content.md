@@ -9,6 +9,12 @@ category: "collaboration"
 
 XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개발을 진행 중인 프로젝트입니다. 현재는 프레임워크 개발 단계입니다.
 
+## 사용된 주요 기술 스택
+
+- **엔진 및 언어**: Unreal Engine 5 (UE5), C++
+- **핵심 프레임워크**: Gameplay Ability System (GAS), Hierarchical Gameplay Tags
+- **시스템 및 관리**: Data-Driven 스포너 구조, 다이내믹 카드 드로우 및 확률 풀 매니저
+
 ## 메인 게임플레이 루프 및 핵심 메커니즘
 
 CCG처럼 카드가 랜덤하게 등장하고, 이 카드를 필드에 배치하면 타워 형태로 설치되는 Unreal Engine 5 기반의 타워 디펜스 게임입니다 (현재 개발 진행 중). 난이도 조절을 위해 현재 설치된 타워 풀(Pool)의 상태에 따라 각 카드의 등장 확률이 실시간으로 변동하는 동적 카드 드로우 체계를 핵심 게임플레이 루프로 삼고 있습니다. 또한, GAS(Gameplay Ability System)를 적극 응용하여 타워와 적 객체 간의 복잡한 상호작용을 효율적으로 처리하도록 설계하는 것에 주력하고 있습니다.
