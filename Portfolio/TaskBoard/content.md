@@ -36,16 +36,10 @@ LIVE 네트워킹을 응용할 것을 예상하고 프레임워크를 구현한 
 
 ```mermaid
 graph TD
-    subgraph "Client Layer"
-        UI[Node Graph UI & DFS Cycle Prevention] --> Socket[WebSocket & CoreNetworkHandler]
-    end
-    subgraph "App Server Layer (Air-Gap Isolated)"
-        Socket --> Auth[Google OAuth & Whitelist Auth]
-        Auth --> State[State Cascade Propagation Engine]
-        State --> PQC[LIVE DTS & PQC ML-KEM Transport]
-    end
-    subgraph "DB Server Layer (Air-Gap Direct Line)"
-        PQC -->|Air-Gap 1:1 Unmanaged Switch| DB[(Air-Gap Isolated Master DB)]
+    subgraph "보안 우선(Defense-in-Depth) 및 의존성 루프 방지"
+        DFS[DFS 기반 순환 참조 방지 알고리즘<br/>기획 변경 시 엣지 케이스 무한 Loop 사전 차단] --> Cascade[State Cascade Propagation<br/>실시간 병목 지점 상태 자동 전파]
+        PQC[양자내성 암호 ML-KEM 패킷 래핑] --> AirGap[물리적 Air-Gap 1:1 비관리형 스위치 격리<br/>외부망 DB 서버 접근 원천 차단]
+        AirGap --> UI[Read-Only 원격 프록시 차단<br/>마스터 콘솔 보안]
     end
 ```
 

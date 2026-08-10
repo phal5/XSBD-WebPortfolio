@@ -36,14 +36,11 @@ XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개�
 
 ```mermaid
 graph TD
-    subgraph "Domain Layer (LOP.Core)"
-        Domain[Pure C# Domain Model] --> Trans[Resource Container Transaction]
-        Domain --> State[Guest FSM: Entering -> Waiting -> Leaving]
-    end
-    subgraph "Hexagonal Adapters"
-        Mono[MonoBehaviour Adapter] -->|Ports| Domain
-        UI[Observer Event UI] -->|Presentation| Domain
-        Test[PlayMode Integration Test Suite] -->|Automated Verification| Domain
+    subgraph "도메인과 엔진의 완벽한 분리 (Hexagonal Architecture 난제 해결)"
+        Domain[순수 C# LOP.Core<br/>상태 머신 및 트랜잭션 관리] --> Ports[Hexagonal Ports<br/>의존성 역전 인터페이스]
+        Ports --> Unity[MonoBehaviour Adapter<br/>로직과 렌더링 분리]
+        Ports --> UI[Observer 기반 UI 렌더링]
+        Ports --> Test[PlayMode 통합 테스트 환경<br/>유니티 엔진 종속성 탈피 및 무결성 검증]
     end
 ```
 

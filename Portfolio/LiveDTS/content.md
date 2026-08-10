@@ -36,15 +36,10 @@ LIVE DTS 프로젝트는 엔진의 높은 개발 난이도와 기술적 복잡�
 
 ```mermaid
 graph TD
-    subgraph "Client Layer"
-        Client[Unity / C# Client] -->|Wire Protocol| Wire[SSoT Wire Protocol Handler]
-    end
-    subgraph "Engine Core (.NET 10)"
-        Wire -->|Connection ID| Feistel[4-Round Feistel Cipher & Fast Gate]
-        Feistel -->|TCP Data framing| Parallel[Parallel Drain UDP Pipeline]
-        Feistel -->|Pluggable Crypto| Crypto[ML-KEM-768 & Pluggable Crypto Suite]
-        Parallel -->|Atomic Word| Tracker[64-bit Atomic BufferTracker RefCount]
-        Tracker -->|Lock-free| Resume[HMAC Liveness Session Resume]
+    subgraph "네트워크 & 메모리 최적화 난제 해결"
+        SSoT[SSoT 와이어 프로토콜<br/>8바이트 설정 다이제스트 상호 검증] --> Drop[설정 미스매치 사전 차단]
+        UDP[Connection ID 기반<br/>병렬 드레인 UDP 파이프라인] --> AEAD[스레드 풀 병렬 해독/재조합<br/>멀티테넌트 격리 및 단일 소켓 병목 제거]
+        Buffer[64비트 아토믹 워드 BufferTracker<br/>단일 연산 상태 추적] --> UAF[패킷당 15~30ns 극소 오버헤드<br/>Double-Free, UAF, GC 개입 방지]
     end
 ```
 

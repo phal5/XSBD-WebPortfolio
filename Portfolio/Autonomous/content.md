@@ -37,13 +37,10 @@ XSBD 최초의 프로젝트로, 프로그래머들의 역량을 보여줄 수 �
 
 ```mermaid
 graph TD
-    subgraph "AI & Instinct Engine"
-        AI[Instinct & Hunger AI Decision Matrix] --> Frame[5-Phase Frame-Slicing Scheduler]
-    end
-    subgraph "Factory & Inventory Architecture"
-        Frame --> Factory[Power-Action-Feed Modular Machine]
-        Factory --> Spawner[Auto Feed Dispenser]
-        Factory --> Inv[World Space Render Inventory]
+    subgraph "AI 프레임 최적화 및 모듈식 팩토리 구조"
+        AI[본능/식욕 정수 연산 AI<br/>복잡한 행동 트리 대신 정수 연산으로 로직 전환] --> CPU[5단계 프레임 분산(Frame-Slicing)<br/>대규모 AI 연산 시 CPU 병목/스파이크 차단]
+        CPU --> Factory[동력-작동-먹이 분리 아키텍처<br/>모듈 결합을 통한 팩토리 확장성 난제 해결]
+        Factory --> Inv[World Space 인벤토리<br/>실세계 렌더링 최적화]
     end
 ```
 
