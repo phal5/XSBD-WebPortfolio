@@ -51,3 +51,7 @@ graph TD
 ## 개발 후기
 
 FMOD DSP Clock 기반의 자체 동기화 로직과 선행 렌더링 계산식, 그리고 풀링 최적화까지 결합하여 오디오와 입력 간 1밀리초 오차 없는 탄탄한 리듬 게임 코어 아키텍처를 완성해 본 의미 있는 개발 경험이었습니다.
+
+## 시연 영상 및 관련 링크
+
+* 🎬 [Cooking Beats 시연 영상](https://www.youtube.com/watch?v=MNwdqbRF1wA)

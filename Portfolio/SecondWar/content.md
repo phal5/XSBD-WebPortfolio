@@ -53,4 +53,4 @@ graph TD
 
 ## 시연 영상 및 관련 링크
 
-* 🎬 [[25 Portfolio] The Second War - Alpha Test](https://www.youtube.com/watch?v=u_6hfQG5bFY)
+* 🎬 [[The Second War] Short Montage](https://www.youtube.com/watch?v=B6Pg1OIroto)
