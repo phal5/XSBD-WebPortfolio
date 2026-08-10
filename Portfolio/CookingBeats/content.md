@@ -13,21 +13,6 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 요리사 주인공이 찾아오는 동물 손님들의 요구와 기호에 맞춰 재료를 요리하는 리듬 게임입니다. 동물별 곡에 맞춰 BPM 값을 입력하고, 그에 맞춰 비트가 정확히 흘러나와야 하는 오디오-입력 간 수학적 엄밀성에 집중하여 설계되었습니다. 프레임 드롭에 영향을 받지 않는 완벽한 오디오 시간 동기화와 노트 생성/판정 시차 계산, 그리고 지속적인 부드러움을 위한 메모리 최적화를 메인 게임플레이 루프로 삼고 있습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Audio & Time Engine"
-        FMOD[FMOD Sound Engine] --> Clock[DSP Clock & Marker Callback]
-        Clock --> Sync[Frame-Independent Sync Engine]
-    end
-    subgraph "Rhythm Game Pipeline"
-        Sync --> Chart[SpawnChart & Delay Chart Pipeline]
-        Chart --> Pool[Note Object Pooling System]
-        Pool --> Observer[Observer Pattern Event Broadcast]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)
@@ -45,6 +30,19 @@ graph TD
 4. 게임 로직과 시각 연출 간 결합도를 낮추는 옵저버(Observer) 패턴 기반 이벤트 브로드캐스트 아키텍처
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Audio & Time Engine"
+        FMOD[FMOD Sound Engine] --> Clock[DSP Clock & Marker Callback]
+        Clock --> Sync[Frame-Independent Sync Engine]
+    end
+    subgraph "Rhythm Game Pipeline"
+        Sync --> Chart[SpawnChart & Delay Chart Pipeline]
+        Chart --> Pool[Note Object Pooling System]
+        Pool --> Observer[Observer Pattern Event Broadcast]
+    end
+```
 
 시간 동기화 측면에서는 프레임 단위의 Time.deltaTime 연산 대신, FMOD 엔진이 제공하는 비트/마커 콜백과 운영체제 오디오 버퍼의 실제 재생 시간인 DSP Clock(Digital Signal Processing Clock)을 추출하여 자체 비트 연산 로직과 결합했습니다. 이를 통해 프레임 저하나 랙이 발생하더라도 내부 판정 시각이 오디오 트랙과 1밀리초의 오차도 없이 일치하도록 수학적 엄밀성을 확보했습니다.
 

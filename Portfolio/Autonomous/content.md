@@ -15,20 +15,6 @@ XSBD 최초의 프로젝트로, 프로그래머들의 역량을 보여줄 수 �
 
 기계장치가 주는 먹이를 쫓아가며 회전문을 밀거나, 도르래에 매달린 발판 위에 올라가거나, 시소 위에서 양쪽에 번갈아 나오는 먹이를 쫓아 이리저리 움직이다 보면 공장도 돌아가고 동물들도 배불러집니다. 물론 그걸 위해 동물들을 공장에 납치하긴 해야 하지만, 원시인 주인공 '밥'은 동물 복지 같은 건 신경 쓰지 않습니다. 동물들이 먹이가 떨어진 공장에 관심이 없는 것처럼요.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "AI & Instinct Engine"
-        AI[Instinct & Hunger AI Decision Matrix] --> Frame[5-Phase Frame-Slicing Scheduler]
-    end
-    subgraph "Factory & Inventory Architecture"
-        Frame --> Factory[Power-Action-Feed Modular Machine]
-        Factory --> Spawner[Auto Feed Dispenser]
-        Factory --> Inv[World Space Render Inventory]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)
@@ -48,6 +34,18 @@ graph TD
 6. 3D 필드 아이템을 정제해 미니어처로 보여주는 World Space 기반 인벤토리 시스템
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "AI & Instinct Engine"
+        AI[Instinct & Hunger AI Decision Matrix] --> Frame[5-Phase Frame-Slicing Scheduler]
+    end
+    subgraph "Factory & Inventory Architecture"
+        Frame --> Factory[Power-Action-Feed Modular Machine]
+        Factory --> Spawner[Auto Feed Dispenser]
+        Factory --> Inv[World Space Render Inventory]
+    end
+```
 
 동물 AI의 경우, 가장 큰 틀에서는 동물에게 포식자나 위협으로부터 도망치는 본능과 배고픔(식욕) 두 가지 행동 원칙을 심어준 뒤 정수 연산으로 결합해 우선순위를 판단하게 만들었습니다. 배고픔 수치가 올라갈수록 다른 상태보다 먹이 추적 반응이 우선시되도록 만들어, 바쁘게 돌아가는 기계 장치 사이에서도 먹이를 최우선으로 쫓도록 유도했습니다. 또한 공장에 동물이 많아질 때 발생하는 CPU 병목을 막기 위해 연산을 5단계 프레임으로 분산 처리(Frame-Slicing)했습니다.
 

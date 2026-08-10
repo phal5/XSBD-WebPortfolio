@@ -13,24 +13,6 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 적들이 상단과 하단 두 갈래 길에서 계속 쏟아져 들어오는 상황에서, 주인공 캐릭터를 조작해 라인을 오가며 자동으로 스폰되는 아군 및 자동 포탑과 함께 적들을 방어하는 2D 라인 디펜스 액션 RPG 게임입니다. 적의 공세에 맞춰 포탑 수리나 용병 고용에 필요한 재화를 운용하고, 적들이 드롭하는 룬(Relic)을 최대 5개까지 장착하여 속성 조합 시너지 버프를 활용하는 메인 게임플레이 루프를 가지고 있습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Core Managers (@Managers)"
-        M[Facade Manager] --> Path[Tilemap A* Mover]
-        M --> Wave[FSM Wave & Spawn Manager]
-        M --> Stat[SSoT Modifier Stat Pipeline]
-        M --> Relic[Rune Synergy Evaluator]
-    end
-    subgraph "Combat & World"
-        Wave --> Enemy[FSM Enemy AI]
-        Wave --> Minion[FSM Minion & Turret]
-        Stat --> Player[Player Controller]
-        Relic --> Aura[Sensor Aura Buff Component]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)
@@ -51,6 +33,22 @@ graph TD
 7. 컴포넌트 단위로 독립 캡슐화된 위치/센서 기반 오라(Aura) 버프 시스템
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Core Managers (@Managers)"
+        M[Facade Manager] --> Path[Tilemap A* Mover]
+        M --> Wave[FSM Wave & Spawn Manager]
+        M --> Stat[SSoT Modifier Stat Pipeline]
+        M --> Relic[Rune Synergy Evaluator]
+    end
+    subgraph "Combat & World"
+        Wave --> Enemy[FSM Enemy AI]
+        Wave --> Minion[FSM Minion & Turret]
+        Stat --> Player[Player Controller]
+        Relic --> Aura[Sensor Aura Buff Component]
+    end
+```
 
 스탯 시스템의 경우, 고유 Modifier ID를 이용해 합산 및 비율 버프/디버프의 중첩 연산을 표준화하고, C# Event 기반 Observer 패턴으로 스탯 변동 시 UI와 전투 컴포넌트가 수동 폴링 없이 즉시 동기화되도록 구축했습니다. 룬 시너지 시스템은 장착 속성 카운팅과 조건 검사 로직을 독립된 클래스로 완전히 분리했습니다. 룬 장착/해제 시점에만 조건 검사를 진행하고, 활성/비활성 상태가 전환될 때만 이벤트를 발행하도록 설계하여 불필요한 프레임 연산을 최소화했습니다.
 

@@ -13,22 +13,6 @@ XSBD에서 한국IT직업전문학교 게임기획학과 기획자분과의 협�
 
 펭귄을 핀볼처럼 튕겨내며 맵 상에서 움직이는 적들을 소탕하는 핀볼 메커니즘 기반의 게임입니다. 맵 상에 튕김이 좋은 오브젝트(Bumper)를 배치하여 반사 횟수를 늘리거나, 펭귄에게 장비를 주어 특수 능력을 부여하고 웨이브와 상점 시스템을 거치는 구조를 채택하고 있습니다. 이벤트 기반의 결합도 최소화와 전략 패턴을 통한 능력 확장, 그리고 UI와 비즈니스 로직의 명확한 분리를 메인 개발 기조로 삼았습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Input & Physics Control"
-        Input[Pinball Input Actions] --> Launch[Screen-3D Vector Projector]
-        Launch --> Penguin[PenguinController & Rigidbody]
-    end
-    subgraph "Event Bus & Architecture"
-        Penguin -->|Physics / Hit| Bus[GameEvents Static Event Bus]
-        Bus --> Resolver[CombatResolver & Speed Non-linear Damage]
-        Bus --> MVVM[MVVM Store & Shop Manager]
-        Bus --> Ability[OCP Strategy Ability Engine & Stat Registry]
-    end
-```
-
 ## 적용된 개발 방법론
 
 블리자드식 툴 구축-조립 개발 방법론 및 이중 소통 채널 관리 (Blizzard-style Tooling Workflow & Dual-Channel Support)
@@ -47,6 +31,20 @@ graph TD
 5. 전투 데미지 연산 전문 해석기 및 스크린-3D 좌표 투영 기반 발사 제어 로직
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Input & Physics Control"
+        Input[Pinball Input Actions] --> Launch[Screen-3D Vector Projector]
+        Launch --> Penguin[PenguinController & Rigidbody]
+    end
+    subgraph "Event Bus & Architecture"
+        Penguin -->|Physics / Hit| Bus[GameEvents Static Event Bus]
+        Bus --> Resolver[CombatResolver & Speed Non-linear Damage]
+        Bus --> MVVM[MVVM Store & Shop Manager]
+        Bus --> Ability[OCP Strategy Ability Engine & Stat Registry]
+    end
+```
 
 전체 아키텍처 측면에서는 GameEvents를 통한 중앙 집중식 static event 관리로 물리, 데미지, 스폰 이벤트를 중계하여 시스템 간 직접 참조를 원천 차단했습니다. 상점 UI 영역에는 MVVM 패턴을 적용해 UI 표현과 비즈니스 로직을 완벽히 분리함으로써 유니티 특유의 UI-로직 강결합 문제를 방지했습니다. 또한, 펭귄 능력 연산 시 전략 패턴 기반 인터페이스를 적용해 신규 펭귄 타입 추가 시 기존 코드를 수정하지 않는 개방-폐쇄 원칙(OCP)을 준수했습니다.
 

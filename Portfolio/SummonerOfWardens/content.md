@@ -13,20 +13,6 @@ XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개�
 
 CCG처럼 카드가 랜덤하게 등장하고, 이 카드를 필드에 배치하면 타워 형태로 설치되는 Unreal Engine 5 기반의 타워 디펜스 게임입니다 (현재 개발 진행 중). 난이도 조절을 위해 현재 설치된 타워 풀(Pool)의 상태에 따라 각 카드의 등장 확률이 실시간으로 변동하는 동적 카드 드로우 체계를 핵심 게임플레이 루프로 삼고 있습니다. 또한, GAS(Gameplay Ability System)를 적극 응용하여 타워와 적 객체 간의 복잡한 상호작용을 효율적으로 처리하도록 설계하는 것에 주력하고 있습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Unreal Engine 5 Core"
-        GAS[Gameplay Ability System] --> Tags[Hierarchical Gameplay Tags]
-        Tags --> Ability[SOWCoreRune & Enemy Gameplay Abilities]
-    end
-    subgraph "Game Subsystems"
-        Pool[Card Pool Dynamic Draw Subsystem] --> GA[Ranged / Melee Attack Ability]
-        Spawner[Data-Driven Tile Map Spawner] --> Priority[Turret Priority Strategy Selection]
-    end
-```
-
 ## 적용된 개발 방법론
 
 클래식 타임박스 기반 주간 이터레이티브 개발 프로세스 (Classic Timeboxed Iterative Workflow)
@@ -45,6 +31,18 @@ graph TD
 5. 맵 스크립트 파일 연동 기반 데이터 주도(Data-Driven) 타일 및 레벨 생성 스포너
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Unreal Engine 5 Core"
+        GAS[Gameplay Ability System] --> Tags[Hierarchical Gameplay Tags]
+        Tags --> Ability[SOWCoreRune & Enemy Gameplay Abilities]
+    end
+    subgraph "Game Subsystems"
+        Pool[Card Pool Dynamic Draw Subsystem] --> GA[Ranged / Melee Attack Ability]
+        Spawner[Data-Driven Tile Map Spawner] --> Priority[Turret Priority Strategy Selection]
+    end
+```
 
 전략 장르 특성상 다양한 속성, 상태 이상, 시너지 효과가 지속적으로 추가될 수 있음을 고려하여, Character 및 타워에 GAS를 기본 탑재하고 Gameplay Tags를 세분화해 하드코딩 없이 확장성을 극대화했습니다. 또한 원소 시너지 매니저, 소환 매니저 등 핵심 로직을 독립된 모듈로 분리하여 코드 간 결합도를 낮췄으며, 외부 맵 스크립트를 로드해 타일을 생성하는 방식을 적용해 레벨 디자인을 데이터 주도적으로 유연하게 관리할 수 있도록 구축했습니다.
 

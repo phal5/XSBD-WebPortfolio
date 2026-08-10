@@ -13,21 +13,6 @@ XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개�
 
 캐주얼한 접근성과 독창적인 경영/자원 관리 메커니즘을 융합한 3D 타이쿤 게임입니다 (현재 개발 3주차 프로토타입 단계). 별도의 스테이지 구분이나 페널티 없이 이동키 단일 조작(근접 자동 판정)으로 채집, 조리, 판매, 고용, 확장 등 코어 루프 전체를 연속적으로 수행하는 구조를 목표로 개발 중입니다. 자원 채취지와 손님 카운터를 제외한 모든 시설을 자유롭게 배치하고, 10초 내외의 작은 구역(District) 단위 순환을 확장해 나가며 플레이어가 위치한 구역의 생산량이 2배가 되는 플레이어 주둔 버프 메커니즘을 핵심 게임플레이 루프로 삼고 있습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Domain Layer (LOP.Core)"
-        Domain[Pure C# Domain Model] --> Trans[Resource Container Transaction]
-        Domain --> State[Guest FSM: Entering -> Waiting -> Leaving]
-    end
-    subgraph "Hexagonal Adapters"
-        Mono[MonoBehaviour Adapter] -->|Ports| Domain
-        UI[Observer Event UI] -->|Presentation| Domain
-        Test[PlayMode Integration Test Suite] -->|Automated Verification| Domain
-    end
-```
-
 ## 적용된 개발 방법론
 
 블리자드식 툴 구축-조립 개발 방법론 및 이중 소통 채널 관리 (Blizzard-style Tooling Workflow & Dual-Channel Support)
@@ -48,6 +33,19 @@ graph TD
 7. PlayMode 기반 핵심 루프 검증을 위한 자동화 통합 테스트 스위트
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Domain Layer (LOP.Core)"
+        Domain[Pure C# Domain Model] --> Trans[Resource Container Transaction]
+        Domain --> State[Guest FSM: Entering -> Waiting -> Leaving]
+    end
+    subgraph "Hexagonal Adapters"
+        Mono[MonoBehaviour Adapter] -->|Ports| Domain
+        UI[Observer Event UI] -->|Presentation| Domain
+        Test[PlayMode Integration Test Suite] -->|Automated Verification| Domain
+    end
+```
 
 아키텍처 측면에서는 헥사고날 아키텍처(Ports and Adapters) 개념을 엄격하게 반영했습니다. 게임의 핵심 수치 연산과 상태 판정을 담당하는 순수 C# 도메인 모델(LOP.Core)을 중앙에 두고, 유니티 엔진 사이클(MonoBehaviour) 및 화면 렌더링(LOP.Presentation)을 외부 어댑터(Adapter) 형태로 결합했습니다. 서로 다른 모듈을 서로 다른 작업자가 관리하는 상황에서 엄격한 의존성 배제를 통해 개발 안정성과 자유도를 극대화했습니다.
 

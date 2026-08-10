@@ -13,22 +13,6 @@ category: "lab"
 
 .NET 10 기반으로 개발되었으며, 유니티 환경에서도 구동 가능하도록 설계된 고성능 대칭형 Dual TCP + UDP 하이브리드 네트워킹 엔진입니다. 엔진을 사용하는 개발자의 자유도를 최대한 보장하는 것을 최우선 목표로 삼았습니다. 철저한 계층화(Layered Architecture)를 통해 각 프로젝트의 필요에 따라 특정 부품은 직접 구현해 끼워 넣고 불필요한 기능은 제외할 수 있는, 진정한 의미의 '객체지향적 탈착형 아키텍처'를 구현했습니다. C#의 고질적인 문제인 Gen2 GC의 개입을 예방하기 위해 메모리 할당을 극도로 제한했습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Client Layer"
-        Client[Unity / C# Client] -->|Wire Protocol| Wire[SSoT Wire Protocol Handler]
-    end
-    subgraph "Engine Core (.NET 10)"
-        Wire -->|Connection ID| Feistel[4-Round Feistel Cipher & Fast Gate]
-        Feistel -->|TCP Data framing| Parallel[Parallel Drain UDP Pipeline]
-        Feistel -->|Pluggable Crypto| Crypto[ML-KEM-768 & Pluggable Crypto Suite]
-        Parallel -->|Atomic Word| Tracker[64-bit Atomic BufferTracker RefCount]
-        Tracker -->|Lock-free| Resume[HMAC Liveness Session Resume]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1인 전담 코어 개발 및 단계적 프레임워크 확장 프로세스 (Sole-Developer Core Architecture Workflow)
@@ -49,6 +33,20 @@ LIVE DTS 프로젝트는 엔진의 높은 개발 난이도와 기술적 복잡�
 7. 세부 드롭 사유 카운터 기반 텔레메트리 시스템
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Client Layer"
+        Client[Unity / C# Client] -->|Wire Protocol| Wire[SSoT Wire Protocol Handler]
+    end
+    subgraph "Engine Core (.NET 10)"
+        Wire -->|Connection ID| Feistel[4-Round Feistel Cipher & Fast Gate]
+        Feistel -->|TCP Data framing| Parallel[Parallel Drain UDP Pipeline]
+        Feistel -->|Pluggable Crypto| Crypto[ML-KEM-768 & Pluggable Crypto Suite]
+        Parallel -->|Atomic Word| Tracker[64-bit Atomic BufferTracker RefCount]
+        Tracker -->|Lock-free| Resume[HMAC Liveness Session Resume]
+    end
+```
 
 와이어 프로토콜 표준화를 단일 모듈로 일원화하고, 연결 수립 시점에 8바이트 다이제스트 값을 상호 검증해 설정 미스매치를 사전에 차단하게 만들었습니다. UDP 수신 측에서는 단일 소켓 병목을 피하기 위해 Connection ID 기반 수신 큐 분리를 적용했으며, 스레드 풀에서 AEAD 해독 및 재조합을 병렬로 처리하여 동일 연결 내 순서 보장과 서로 다른 연결 간 병렬 처리를 동시에 달성했습니다. 또한 피어별 큐 예산을 독립 제어하여 악의적인 UDP 플러드 공격이 들어오더라도 타 세션의 통신을 방해하지 못하도록 격리했습니다.
 

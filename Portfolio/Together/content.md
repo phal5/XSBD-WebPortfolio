@@ -13,20 +13,6 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 초~중반에는 다이얼로그 및 단서/오브젝트 수집을 진행하는 2D 워킹 시뮬레이터로 진행되다가, 후반부에는 시간 제한 내에 주어진 맵을 주파하고 탈출해야 하는 미션으로 이어지는 구조의 게임입니다. 머릿속에 위치 및 생명 통제용 칩이 이식되어 있는 피험자들이 24일이 되기 전 칩을 수술로 제거하고 의문의 연구소를 탈출해야 하는 스토리를 다루고 있습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "No-Code Authoring & Automation"
-        Editor[ExecuteInEditMode Automation Tool] --> Dialogue[No-Code Dialogue Inspector]
-        Dialogue -->|UnityEvent| Event[Scene Transition & Item Event]
-    end
-    subgraph "Gameplay Engine"
-        Event --> Movement[Player Movement & Stats]
-        Event --> AI[3-Stage Enemy AI: Chase -> Attack -> Retreat]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 도구 주도 온디맨드 기술 지원 방법론 (1-Week Agile Sprint & Tool-Driven On-Demand Support)
@@ -43,6 +29,18 @@ graph TD
 3. 씬 조립 반복 작업을 줄이기 위한 에디터 오토메이션(Automation) 툴
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "No-Code Authoring & Automation"
+        Editor[ExecuteInEditMode Automation Tool] --> Dialogue[No-Code Dialogue Inspector]
+        Dialogue -->|UnityEvent| Event[Scene Transition & Item Event]
+    end
+    subgraph "Gameplay Engine"
+        Event --> Movement[Player Movement & Stats]
+        Event --> AI[3-Stage Enemy AI: Chase -> Attack -> Retreat]
+    end
+```
 
 노코드 대화 시스템의 경우 조건(Collision, Trigger, Start, Enable)을 인스펙터 상에서 클릭만으로 지정하고, 대사를 인스펙터 상에 노출된 필드에 입력하도록 설계하여 대화 종료 후 씬 전환이나 아이템 지급 등의 후속 이벤트를 UnityEvent로 드래그 한 번에 연결하도록 설계했습니다. 또한 데이터 연산과 UI 렌더링을 분리하고 자동 개행 처리를 구현해 작업 편의성을 높였습니다.
 

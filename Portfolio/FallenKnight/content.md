@@ -13,20 +13,6 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 다양한 적과 보스를 물리치는 것을 목표로 하는 소울라이크 액션 게임입니다. (Dead Line 프로젝트보다 1년 먼저 진행했습니다.) 몰입감 있는 보스 전투와 다채로운 전투 경험을 제공하는 것을 메인 목표로 하며, 플레이어는 스태미나를 관리하면서 콤보 공격, 캔슬링, 방어 등의 적절한 행동 조합을 통해 보스의 패턴을 공략해야 합니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Player Controller Layer"
-        Input[Player Input] --> State[Custom State Machine Controller]
-        State --> Action[Combo / Cancel / Guard Action Execution]
-    end
-    subgraph "Boss Combat System"
-        Camera[3D Spherical Lock-On Camera] --> Rim[Pseudo-Rim Lighting Shader]
-        Boss[Behavior Tree & Strategy Boss AI] --> Rim
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)
@@ -44,6 +30,18 @@ graph TD
 4. 어두운 환경에서의 식별을 위한 Normal Map 기반 Pseudo-Rim Lighting 셰이더
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Player Controller Layer"
+        Input[Player Input] --> State[Custom State Machine Controller]
+        State --> Action[Combo / Cancel / Guard Action Execution]
+    end
+    subgraph "Boss Combat System"
+        Camera[3D Spherical Lock-On Camera] --> Rim[Pseudo-Rim Lighting Shader]
+        Boss[Behavior Tree & Strategy Boss AI] --> Rim
+    end
+```
 
 플레이어 컨트롤러는 각 상태별 특성을 정의할 수 있는 아키텍처를 구축하고 State 패턴을 도입했습니다. 이를 통해 '공격-공격(최대 3회 콤보)', '공격-회피(캔슬링)', '방어-강공격(선 딜레이 감소)' 등 상황에 맞는 행동 조합과 애니메이션을 효율적으로 매칭하고 밸런싱할 수 있도록 프레임워크화했습니다.
 

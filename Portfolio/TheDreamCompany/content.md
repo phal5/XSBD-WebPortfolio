@@ -13,20 +13,6 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 분기별로 선택지에 맞는 영상을 재생해야 하는 인터랙티브 무비 / FMV(Full-Motion Video) 장르의 게임입니다. 키보드 기반의 분기 탐색 시스템을 핵심 게임플레이 루프로 삼고 있습니다. 당시 노드 기반 시각화 에디터 툴의 부재라는 시대적/기술적 한계를 극복하기 위해, 별도의 무거운 외부 플러그인 없이 유니티 Resources 폴더의 디렉토리 구조 자체를 상태 머신(State Machine) 및 트리 구조로 직접 활용하는 방식을 구축했습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Folder Structure State Machine"
-        Folder[Resources Directory Layout A/B/AB/Y] --> Tree[VideoTree Directory Parser]
-        Tree --> Gen[CreateInstructionFile JSON Generator]
-    end
-    subgraph "Interactive Video Player"
-        Gen --> Player[VideoPlayerManager]
-        Timer[Timer Speed Control] --> Distortion[Chromatic Aberration Visual Distortion]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 도구 주도 온디맨드 기술 지원 방법론 (1-Week Agile Sprint & Tool-Driven On-Demand Support)
@@ -43,6 +29,18 @@ graph TD
 3. 타이머 연동 비디오 재생 속도 제어 및 화면 노이즈/색수차(Chromatic Aberration) 연출 시스템
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Folder Structure State Machine"
+        Folder[Resources Directory Layout A/B/AB/Y] --> Tree[VideoTree Directory Parser]
+        Tree --> Gen[CreateInstructionFile JSON Generator]
+    end
+    subgraph "Interactive Video Player"
+        Gen --> Player[VideoPlayerManager]
+        Timer[Timer Speed Control] --> Distortion[Chromatic Aberration Visual Distortion]
+    end
+```
 
 기획자나 디자이너가 규칙에 맞는 이름을 가진 폴더(A(분기 1), B(분기 2), AB(입력에 상관없이 재생), Y(갈라진 분기 병합))에 영상 파일을 배치하기만 하면 분기 트리가 자동으로 가동되는 직관적인 디렉토리 구조 아키텍처를 설계하여 작업 파이프라인과 개발 효율성을 크게 끌어올렸습니다. 또한, 파일 수동 작성에 따른 오타와 번거로움을 방지하기 위해 유니티 에디터 인스펙터 상에서 클릭만으로 전용 JSON 데이터를 생성하는 에디터 툴을 개발해 팀 단위 작업 생산성을 확보했습니다.
 

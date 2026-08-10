@@ -13,23 +13,6 @@ LIVE 네트워킹을 응용할 것을 예상하고 프레임워크를 구현한 
 
 방향성 비순환 그래프(DAG, Directed Acyclic Graph) 구조를 채택하여 프로젝트의 선후 의존관계와 병목 구간을 동적으로 추적하는 3-Tier 기반의 유기적 업무 현황 공유 시스템입니다. Jira 등의 프로젝트에서 활용하는 전통적인 칸반 보드나 Gantt 차트의 한계를 넘어, 기획 변경에 대한 가소성을 확보하면서도 물리적 에어갭(Air-Gap) 및 양자내성 암호(PQC) 기반의 강력한 보안성을 제공하는 메인 게임플레이/작업 루프 스타일을 채택했습니다.
 
-### 시스템 아키텍처 다이어그램
-
-```mermaid
-graph TD
-    subgraph "Client Layer"
-        UI[Node Graph UI & DFS Cycle Prevention] --> Socket[WebSocket & CoreNetworkHandler]
-    end
-    subgraph "App Server Layer (Air-Gap Isolated)"
-        Socket --> Auth[Google OAuth & Whitelist Auth]
-        Auth --> State[State Cascade Propagation Engine]
-        State --> PQC[LIVE DTS & PQC ML-KEM Transport]
-    end
-    subgraph "DB Server Layer (Air-Gap Direct Line)"
-        PQC -->|Air-Gap 1:1 Unmanaged Switch| DB[(Air-Gap Isolated Master DB)]
-    end
-```
-
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)
@@ -50,6 +33,21 @@ graph TD
 7. Read-Only 앱 서버 모니터 및 물리적 접근 전용 DB 마스터 대시보드 관제 체계
 
 ## 핵심 시스템의 세부 구현 방식
+
+```mermaid
+graph TD
+    subgraph "Client Layer"
+        UI[Node Graph UI & DFS Cycle Prevention] --> Socket[WebSocket & CoreNetworkHandler]
+    end
+    subgraph "App Server Layer (Air-Gap Isolated)"
+        Socket --> Auth[Google OAuth & Whitelist Auth]
+        Auth --> State[State Cascade Propagation Engine]
+        State --> PQC[LIVE DTS & PQC ML-KEM Transport]
+    end
+    subgraph "DB Server Layer (Air-Gap Direct Line)"
+        PQC -->|Air-Gap 1:1 Unmanaged Switch| DB[(Air-Gap Isolated Master DB)]
+    end
+```
 
 노드 상태 시스템은 선행 노드들의 완료 여부에 따라 PENDING, AVAILABLE, FINISHED 상태를 자동으로 재계산하여 전파합니다. 특정 업무가 지연되면 하위 작업들이 PENDING 상태로 묶여 시각적으로 즉각 병목 지점이 드러나게 만들었습니다. 또한, 기획 변경 시 발생할 수 있는 잘못된 순환 의존성(Loop) 생성을 차단하기 위해 클라이언트와 서버 양쪽에서 DFS 기반 검증 알고리즘을 수행하도록 구축했습니다.
 
