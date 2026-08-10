@@ -13,6 +13,20 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 분기별로 선택지에 맞는 영상을 재생해야 하는 인터랙티브 무비 / FMV(Full-Motion Video) 장르의 게임입니다. 키보드 기반의 분기 탐색 시스템을 핵심 게임플레이 루프로 삼고 있습니다. 당시 노드 기반 시각화 에디터 툴의 부재라는 시대적/기술적 한계를 극복하기 위해, 별도의 무거운 외부 플러그인 없이 유니티 Resources 폴더의 디렉토리 구조 자체를 상태 머신(State Machine) 및 트리 구조로 직접 활용하는 방식을 구축했습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Folder Structure State Machine"
+        Folder[Resources Directory Layout A/B/AB/Y] --> Tree[VideoTree Directory Parser]
+        Tree --> Gen[CreateInstructionFile JSON Generator]
+    end
+    subgraph "Interactive Video Player"
+        Gen --> Player[VideoPlayerManager]
+        Timer[Timer Speed Control] --> Distortion[Chromatic Aberration Visual Distortion]
+    end
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 도구 주도 온디맨드 기술 지원 방법론 (1-Week Agile Sprint & Tool-Driven On-Demand Support)

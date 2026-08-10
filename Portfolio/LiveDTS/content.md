@@ -13,13 +13,29 @@ category: "lab"
 
 .NET 10 기반으로 개발되었으며, 유니티 환경에서도 구동 가능하도록 설계된 고성능 대칭형 Dual TCP + UDP 하이브리드 네트워킹 엔진입니다. 엔진을 사용하는 개발자의 자유도를 최대한 보장하는 것을 최우선 목표로 삼았습니다. 철저한 계층화(Layered Architecture)를 통해 각 프로젝트의 필요에 따라 특정 부품은 직접 구현해 끼워 넣고 불필요한 기능은 제외할 수 있는, 진정한 의미의 '객체지향적 탈착형 아키텍처'를 구현했습니다. C#의 고질적인 문제인 Gen2 GC의 개입을 예방하기 위해 메모리 할당을 극도로 제한했습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Client Layer"
+        Client[Unity / C# Client] -->|Wire Protocol| Wire[SSoT Wire Protocol Handler]
+    end
+    subgraph "Engine Core (.NET 10)"
+        Wire -->|Connection ID| Feistel[4-Round Feistel Cipher & Fast Gate]
+        Feistel -->|TCP Data framing| Parallel[Parallel Drain UDP Pipeline]
+        Feistel -->|Pluggable Crypto| Crypto[ML-KEM-768 & Pluggable Crypto Suite]
+        Parallel -->|Atomic Word| Tracker[64-bit Atomic BufferTracker RefCount]
+        Tracker -->|Lock-free| Resume[HMAC Liveness Session Resume]
+    end
+```
+
 ## 적용된 개발 방법론
 
-1인 전담 코어 개발 및 이중 소통 채널 관리 프로세스 (Sole-Developer Core Architecture Workflow)
+1인 전담 코어 개발 및 단계적 프레임워크 확장 프로세스 (Sole-Developer Core Architecture Workflow)
 
 LIVE DTS 프로젝트는 엔진의 높은 개발 난이도와 기술적 복잡도를 고려하여 동아리 내 최고 경험 수준의 1인 단독 전담 개발 방식으로 진행되었습니다.
 
-단독 개발 환경에서 커뮤니케이션 오버헤드를 최소화하고 성능 최적화를 완료했습니다. 또한 공통 프로세스에 맞춰 디스코드(Discord)와 카카오톡(KakaoTalk) 2개 이상의 소통 채널을 상시 가동하여 실시간으로 이슈와 이상 유무를 공유했고, 정기 회의를 통해 프로젝트 완성을 위한 기술 백로그와 요구사항을 차근차근 산정해 개발을 완성했습니다.
+단독 개발 환경에서 커뮤니케이션 오버헤드를 최소화하고 아키텍처의 철저한 객체지향적 결합도와 성능 최적화(.NET 10 Dual TCP+UDP, 64비트 아토믹 BufferTracker 등)를 빠르게 완성했습니다. 일관된 코드 품질 관리를 바탕으로 코어 프레임워크 확정을 완료한 후, 이식 단계 및 편의성 기능 구현을 위해 동아리 내부에서 참여 인원을 추가 모집하고 확장하는 단계를 밟았습니다.
 
 ## 구현에 필요했던 주요 시스템 목록
 

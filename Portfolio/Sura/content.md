@@ -13,6 +13,15 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 "검과 함께 비상하다. 그리고 화려하게 복수하라"라는 슬로건을 가진 무협 액션 게임입니다. 3인칭 숄더뷰 시점을 기반으로, 주변 환경과 적의 위치를 실시간으로 연산하여 단순한 공격 입력만으로도 화려하고 다채로운 공격 연출을 만들어내는 프리플로우(Freeflow) 전투 방식을 메인 게임플레이 루프 스타일로 채택했습니다.
 
+```mermaid
+graph TD
+    AttackInput["단일 공격 입력"] --> Targeting["적 타겟팅 알고리즘<br/>(거리 / 방향 / 뷰포트 계산)"]
+    Targeting --> PathGen["3D 곡선 경로 생성<br/>& 동적 변형 모션"]
+    PathGen --> FreeflowAction["프리플로우 연출 공격 실행"]
+    Quadtree["Quadtree 기반 공간 분할<br/>(적 클러스터)"] --> Commander["적 커맨더(Commander)"]
+    Commander --> ClusterAI["인접 클러스터 AI 제어<br/>(경계 / 공격 / 방어 / 후퇴)"]
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)

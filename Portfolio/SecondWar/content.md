@@ -13,6 +13,16 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 무너진 도시에서 벽을 타고 날아다니며 미지의 적을 섬멸하는 1인칭 하이퍼 FPS(Hyper FPS) 게임입니다. 단순한 슈팅을 넘어 속도감 있고 역동적인 움직임 자체가 곧 무기이자 생존 전략이 되는 고속 액션을 메인 게임플레이 루프로 삼고 있습니다.
 
+```mermaid
+graph TD
+    Input["이동 입력"] --> PawnMovement["자체 구현 Pawn Movement"]
+    PawnMovement --> SweepCheck["2-Phase Sweep 지형 탐지"]
+    SweepCheck --> MovementState["Movement State Pattern<br/>(벽주행 / 맨틀링 / 슬라이딩)"]
+    MovementState --> ParkourAction["하이퍼 파쿠르 액션"]
+    Enemies["적 AI (Behavior Tree)"] --> PhysicsCut["Physics Asset 신체 절단<br/>& Pose Snapshot 연출"]
+    Enemies --> CoopAttack["Motion Warping 협동 공격"]
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)

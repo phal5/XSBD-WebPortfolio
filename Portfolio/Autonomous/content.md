@@ -15,6 +15,20 @@ XSBD 최초의 프로젝트로, 프로그래머들의 역량을 보여줄 수 �
 
 기계장치가 주는 먹이를 쫓아가며 회전문을 밀거나, 도르래에 매달린 발판 위에 올라가거나, 시소 위에서 양쪽에 번갈아 나오는 먹이를 쫓아 이리저리 움직이다 보면 공장도 돌아가고 동물들도 배불러집니다. 물론 그걸 위해 동물들을 공장에 납치하긴 해야 하지만, 원시인 주인공 '밥'은 동물 복지 같은 건 신경 쓰지 않습니다. 동물들이 먹이가 떨어진 공장에 관심이 없는 것처럼요.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "AI & Instinct Engine"
+        AI[Instinct & Hunger AI Decision Matrix] --> Frame[5-Phase Frame-Slicing Scheduler]
+    end
+    subgraph "Factory & Inventory Architecture"
+        Frame --> Factory[Power-Action-Feed Modular Machine]
+        Factory --> Spawner[Auto Feed Dispenser]
+        Factory --> Inv[World Space Render Inventory]
+    end
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)

@@ -13,6 +13,22 @@ XSBD에서 한국IT직업전문학교 게임기획학과 기획자분과의 협�
 
 펭귄을 핀볼처럼 튕겨내며 맵 상에서 움직이는 적들을 소탕하는 핀볼 메커니즘 기반의 게임입니다. 맵 상에 튕김이 좋은 오브젝트(Bumper)를 배치하여 반사 횟수를 늘리거나, 펭귄에게 장비를 주어 특수 능력을 부여하고 웨이브와 상점 시스템을 거치는 구조를 채택하고 있습니다. 이벤트 기반의 결합도 최소화와 전략 패턴을 통한 능력 확장, 그리고 UI와 비즈니스 로직의 명확한 분리를 메인 개발 기조로 삼았습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Input & Physics Control"
+        Input[Pinball Input Actions] --> Launch[Screen-3D Vector Projector]
+        Launch --> Penguin[PenguinController & Rigidbody]
+    end
+    subgraph "Event Bus & Architecture"
+        Penguin -->|Physics / Hit| Bus[GameEvents Static Event Bus]
+        Bus --> Resolver[CombatResolver & Speed Non-linear Damage]
+        Bus --> MVVM[MVVM Store & Shop Manager]
+        Bus --> Ability[OCP Strategy Ability Engine & Stat Registry]
+    end
+```
+
 ## 적용된 개발 방법론
 
 블리자드식 툴 구축-조립 개발 방법론 및 이중 소통 채널 관리 (Blizzard-style Tooling Workflow & Dual-Channel Support)

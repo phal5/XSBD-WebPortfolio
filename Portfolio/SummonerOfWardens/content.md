@@ -13,6 +13,20 @@ XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개�
 
 CCG처럼 카드가 랜덤하게 등장하고, 이 카드를 필드에 배치하면 타워 형태로 설치되는 Unreal Engine 5 기반의 타워 디펜스 게임입니다 (현재 개발 진행 중). 난이도 조절을 위해 현재 설치된 타워 풀(Pool)의 상태에 따라 각 카드의 등장 확률이 실시간으로 변동하는 동적 카드 드로우 체계를 핵심 게임플레이 루프로 삼고 있습니다. 또한, GAS(Gameplay Ability System)를 적극 응용하여 타워와 적 객체 간의 복잡한 상호작용을 효율적으로 처리하도록 설계하는 것에 주력하고 있습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Unreal Engine 5 Core"
+        GAS[Gameplay Ability System] --> Tags[Hierarchical Gameplay Tags]
+        Tags --> Ability[SOWCoreRune & Enemy Gameplay Abilities]
+    end
+    subgraph "Game Subsystems"
+        Pool[Card Pool Dynamic Draw Subsystem] --> GA[Ranged / Melee Attack Ability]
+        Spawner[Data-Driven Tile Map Spawner] --> Priority[Turret Priority Strategy Selection]
+    end
+```
+
 ## 적용된 개발 방법론
 
 클래식 타임박스 기반 주간 이터레이티브 개발 프로세스 (Classic Timeboxed Iterative Workflow)

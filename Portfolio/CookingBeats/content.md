@@ -13,6 +13,21 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 요리사 주인공이 찾아오는 동물 손님들의 요구와 기호에 맞춰 재료를 요리하는 리듬 게임입니다. 동물별 곡에 맞춰 BPM 값을 입력하고, 그에 맞춰 비트가 정확히 흘러나와야 하는 오디오-입력 간 수학적 엄밀성에 집중하여 설계되었습니다. 프레임 드롭에 영향을 받지 않는 완벽한 오디오 시간 동기화와 노트 생성/판정 시차 계산, 그리고 지속적인 부드러움을 위한 메모리 최적화를 메인 게임플레이 루프로 삼고 있습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Audio & Time Engine"
+        FMOD[FMOD Sound Engine] --> Clock[DSP Clock & Marker Callback]
+        Clock --> Sync[Frame-Independent Sync Engine]
+    end
+    subgraph "Rhythm Game Pipeline"
+        Sync --> Chart[SpawnChart & Delay Chart Pipeline]
+        Chart --> Pool[Note Object Pooling System]
+        Pool --> Observer[Observer Pattern Event Broadcast]
+    end
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)

@@ -13,6 +13,16 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 목적지에 단순히 도달한다기보다는 좀비들에게 들키지 않고 주어진 임무(목적지의 물건을 회수하기 위해 이동)를 수행하는 1인칭 잠입 액션 게임입니다. 즉, 좀비들의 지능과 감각 체계가 매우 중요하게 작용했던 프로젝트입니다. 시각과 청각을 통해 플레이어를 탐지하는 좀비들의 눈을 피해, 플레이어는 주변 지형지물과 투척물을 활용해 좀비를 유인하고 안전한 경로를 개척해야 하는 메인 게임플레이 루프를 가지고 있습니다.
 
+```mermaid
+graph TD
+    Player["플레이어 행동<br/>(이동 / 투척 / 사격)"] --> NoiseGen["소리 발생 시스템<br/>(재질별 Sound Trigger)"]
+    NoiseGen --> NavMeshPath["내비게이션 메쉬 기반<br/>소리 전파 탐색"]
+    NavMeshPath --> ZoneFilter{"지형 구획(Zone)<br/>경로 유효성 검사"}
+    ZoneFilter -- "구획 내" --> ZombieAI["좀비 AI 추적<br/>(소리 감지 & 시각 탐지)"]
+    ZoneFilter -- "구획 외 차단" --> Ignore["추적 예방 / 최적화"]
+    ZombieAI --> EventQuest["이벤트 기반 퀘스트 시스템<br/>(목적지 물건 회수 & 세이브)"]
+```
+
 ## 적용된 개발 방법론
 
 2주 단위 애자일 스프린트 및 Git-flow 전략 (2-Week Agile Sprint & Git-flow Strategy)

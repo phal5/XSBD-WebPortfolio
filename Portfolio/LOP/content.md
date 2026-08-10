@@ -13,6 +13,21 @@ XSBD에서 미국에 위치한 Ussistant Studio와의 협의 하에 공동 개�
 
 캐주얼한 접근성과 독창적인 경영/자원 관리 메커니즘을 융합한 3D 타이쿤 게임입니다 (현재 개발 3주차 프로토타입 단계). 별도의 스테이지 구분이나 페널티 없이 이동키 단일 조작(근접 자동 판정)으로 채집, 조리, 판매, 고용, 확장 등 코어 루프 전체를 연속적으로 수행하는 구조를 목표로 개발 중입니다. 자원 채취지와 손님 카운터를 제외한 모든 시설을 자유롭게 배치하고, 10초 내외의 작은 구역(District) 단위 순환을 확장해 나가며 플레이어가 위치한 구역의 생산량이 2배가 되는 플레이어 주둔 버프 메커니즘을 핵심 게임플레이 루프로 삼고 있습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Domain Layer (LOP.Core)"
+        Domain[Pure C# Domain Model] --> Trans[Resource Container Transaction]
+        Domain --> State[Guest FSM: Entering -> Waiting -> Leaving]
+    end
+    subgraph "Hexagonal Adapters"
+        Mono[MonoBehaviour Adapter] -->|Ports| Domain
+        UI[Observer Event UI] -->|Presentation| Domain
+        Test[PlayMode Integration Test Suite] -->|Automated Verification| Domain
+    end
+```
+
 ## 적용된 개발 방법론
 
 블리자드식 툴 구축-조립 개발 방법론 및 이중 소통 채널 관리 (Blizzard-style Tooling Workflow & Dual-Channel Support)

@@ -13,6 +13,23 @@ LIVE 네트워킹을 응용할 것을 예상하고 프레임워크를 구현한 
 
 방향성 비순환 그래프(DAG, Directed Acyclic Graph) 구조를 채택하여 프로젝트의 선후 의존관계와 병목 구간을 동적으로 추적하는 3-Tier 기반의 유기적 업무 현황 공유 시스템입니다. Jira 등의 프로젝트에서 활용하는 전통적인 칸반 보드나 Gantt 차트의 한계를 넘어, 기획 변경에 대한 가소성을 확보하면서도 물리적 에어갭(Air-Gap) 및 양자내성 암호(PQC) 기반의 강력한 보안성을 제공하는 메인 게임플레이/작업 루프 스타일을 채택했습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "Client Layer"
+        UI[Node Graph UI & DFS Cycle Prevention] --> Socket[WebSocket & CoreNetworkHandler]
+    end
+    subgraph "App Server Layer (Air-Gap Isolated)"
+        Socket --> Auth[Google OAuth & Whitelist Auth]
+        Auth --> State[State Cascade Propagation Engine]
+        State --> PQC[LIVE DTS & PQC ML-KEM Transport]
+    end
+    subgraph "DB Server Layer (Air-Gap Direct Line)"
+        PQC -->|Air-Gap 1:1 Unmanaged Switch| DB[(Air-Gap Isolated Master DB)]
+    end
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 이중 소통 채널 기반 협업 프로세스 (1-Week Agile Sprint & Dual-Channel Collaboration)

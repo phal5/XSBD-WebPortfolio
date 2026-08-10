@@ -13,6 +13,20 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 초~중반에는 다이얼로그 및 단서/오브젝트 수집을 진행하는 2D 워킹 시뮬레이터로 진행되다가, 후반부에는 시간 제한 내에 주어진 맵을 주파하고 탈출해야 하는 미션으로 이어지는 구조의 게임입니다. 머릿속에 위치 및 생명 통제용 칩이 이식되어 있는 피험자들이 24일이 되기 전 칩을 수술로 제거하고 의문의 연구소를 탈출해야 하는 스토리를 다루고 있습니다.
 
+### 시스템 아키텍처 다이어그램
+
+```mermaid
+graph TD
+    subgraph "No-Code Authoring & Automation"
+        Editor[ExecuteInEditMode Automation Tool] --> Dialogue[No-Code Dialogue Inspector]
+        Dialogue -->|UnityEvent| Event[Scene Transition & Item Event]
+    end
+    subgraph "Gameplay Engine"
+        Event --> Movement[Player Movement & Stats]
+        Event --> AI[3-Stage Enemy AI: Chase -> Attack -> Retreat]
+    end
+```
+
 ## 적용된 개발 방법론
 
 1주 단위 애자일 스프린트 및 도구 주도 온디맨드 기술 지원 방법론 (1-Week Agile Sprint & Tool-Driven On-Demand Support)
