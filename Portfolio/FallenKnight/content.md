@@ -33,9 +33,13 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 ```mermaid
 graph TD
-    subgraph "3D 액션 컨트롤 강제성 및 뷰(View) 가시성 해결"
-        State[커스텀 State Machine<br/>콤보/캔슬/방어 상태 전환의 명확한 통제 확보] --> Anim[애니메이션 블렌딩 트리<br/>액션 흐름 자연화]
-        Camera[구면 3인칭 락온(Lock-On) 카메라<br/>초대형 보스와의 좁은 투기장 전투 시 가시성 이탈 문제 해결] --> Shader[Pseudo-Rim Lighting<br/>어두운 환경 내 캐릭터 식별성 강화]
+    subgraph "Player Controller Layer"
+        Input[Player Input] --> State[Custom State Machine Controller]
+        State --> Action[Combo / Cancel / Guard Action Execution]
+    end
+    subgraph "Boss Combat System"
+        Camera[3D Spherical Lock-On Camera] --> Rim[Pseudo-Rim Lighting Shader]
+        Boss[Behavior Tree & Strategy Boss AI] --> Rim
     end
 ```
 

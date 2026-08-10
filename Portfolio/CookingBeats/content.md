@@ -33,10 +33,14 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 ```mermaid
 graph TD
-    subgraph "프레임 독립적 리듬 동기화 및 메모리 최적화"
-        Unity[Time.deltaTime 의존성 탈피<br/>프레임 드롭 시 오디오 밀림 현상 해결] --> FMOD[FMOD DSP Clock 기반<br/>오디오-노트 동기화 콜백 정밀 제어]
-        FMOD --> Pool[Object Pooling System<br/>생성/파괴로 인한 GC 스파이크 차단]
-        Pool --> Observer[Observer 패턴 이벤트 브로드캐스트<br/>SpawnChart 딜레이 보정 및 UI 갱신]
+    subgraph "Audio & Time Engine"
+        FMOD[FMOD Sound Engine] --> Clock[DSP Clock & Marker Callback]
+        Clock --> Sync[Frame-Independent Sync Engine]
+    end
+    subgraph "Rhythm Game Pipeline"
+        Sync --> Chart[SpawnChart & Delay Chart Pipeline]
+        Chart --> Pool[Note Object Pooling System]
+        Pool --> Observer[Observer Pattern Event Broadcast]
     end
 ```
 

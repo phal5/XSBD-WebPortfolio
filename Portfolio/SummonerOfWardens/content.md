@@ -34,9 +34,13 @@ CCG처럼 카드가 랜덤하게 등장하고, 이 카드를 필드에 배치하
 
 ```mermaid
 graph TD
-    subgraph "UE5 GAS 및 데이터 주도 설계(Data-Driven) 아키텍처"
-        GAS[Gameplay Ability System<br/>능력 확장에 따른 하드코딩 난제 해결] --> Tags[Hierarchical Gameplay Tags<br/>수많은 상태 이상 캡슐화 및 제어]
-        Data[Data-Driven 타일 스포너<br/>디자이너의 레벨 편집과 프로그래머 로직 분리] --> Pool[다이내믹 카드 드로우 풀<br/>확률 및 상태 서브시스템]
+    subgraph "Unreal Engine 5 Core"
+        GAS[Gameplay Ability System] --> Tags[Hierarchical Gameplay Tags]
+        Tags --> Ability[SOWCoreRune & Enemy Gameplay Abilities]
+    end
+    subgraph "Game Subsystems"
+        Pool[Card Pool Dynamic Draw Subsystem] --> GA[Ranged / Melee Attack Ability]
+        Spawner[Data-Driven Tile Map Spawner] --> Priority[Turret Priority Strategy Selection]
     end
 ```
 

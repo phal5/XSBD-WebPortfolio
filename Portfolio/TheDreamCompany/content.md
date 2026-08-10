@@ -32,10 +32,13 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 ```mermaid
 graph TD
-    subgraph "디렉토리 기반 상태머신 및 휴먼 에러 방지"
-        Dir[A/B/AB/Y 자원 디렉토리 파서<br/>단순 폴더 구조를 트리 상태머신으로 변환] --> Gen[JSON Instruction Generator<br/>수동 타이핑 휴먼 에러 및 런타임 크래시 차단]
-        Gen --> Player[비디오 플레이어 매니저<br/>분기점 로직 무결성 확보]
-        Timer[실시간 속도 왜곡 타이머] --> PostProcess[색수차(Chromatic Aberration) 연출 연동]
+    subgraph "Folder Structure State Machine"
+        Folder[Resources Directory Layout A/B/AB/Y] --> Tree[VideoTree Directory Parser]
+        Tree --> Gen[CreateInstructionFile JSON Generator]
+    end
+    subgraph "Interactive Video Player"
+        Gen --> Player[VideoPlayerManager]
+        Timer[Timer Speed Control] --> Distortion[Chromatic Aberration Visual Distortion]
     end
 ```
 

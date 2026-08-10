@@ -34,10 +34,15 @@ XSBD에서 한국IT직업전문학교 게임기획학과 기획자분과의 협�
 
 ```mermaid
 graph TD
-    subgraph "물리 의존성 분리 및 OCP 기반 능력 체계 확장"
-        Input[핀볼 입력 및 투영 벡터] --> Physics[비선형 속도 기반<br/>물리 충돌/데미지 산출]
-        Physics --> Bus[GameEvents 정적 버스<br/>시스템 간 강한 결합도(Coupling) 완화]
-        Bus --> OCP[OCP 전략 패턴 능력 엔진<br/>이벤트 충돌 및 코드 수정 없는 스탯 통합]
+    subgraph "Input & Physics Control"
+        Input[Pinball Input Actions] --> Launch[Screen-3D Vector Projector]
+        Launch --> Penguin[PenguinController & Rigidbody]
+    end
+    subgraph "Event Bus & Architecture"
+        Penguin -->|Physics / Hit| Bus[GameEvents Static Event Bus]
+        Bus --> Resolver[CombatResolver & Speed Non-linear Damage]
+        Bus --> MVVM[MVVM Store & Shop Manager]
+        Bus --> Ability[OCP Strategy Ability Engine & Stat Registry]
     end
 ```
 

@@ -36,12 +36,17 @@ XSBD에서 한국IT직업전문학교 게임기획학과 교수님들과의 협�
 
 ```mermaid
 graph TD
-    subgraph "최적화된 모듈 구조 및 연산 최소화"
-        Event[이벤트 기반 Observer] --> SSoT[SSoT Modifier 스탯 동기화<br/>수동 폴링 및 중첩 병목 제거]
-        Rune[룬 장착/해제 감지] --> Calc[시너지 조건 검사<br/>불필요한 매 프레임 연산 제거]
+    subgraph "Core Managers (@Managers)"
+        M[Facade Manager] --> Path[Tilemap A* Mover]
+        M --> Wave[FSM Wave & Spawn Manager]
+        M --> Stat[SSoT Modifier Stat Pipeline]
+        M --> Relic[Rune Synergy Evaluator]
     end
-    subgraph "아키텍처 캡슐화"
-        Facade[@Managers 파사드<br/>도메인 진입점 일원화] --> AStar[Tilemap A* 경로 탐색<br/>지형 변경 시 로직 종속성 분리]
+    subgraph "Combat & World"
+        Wave --> Enemy[FSM Enemy AI]
+        Wave --> Minion[FSM Minion & Turret]
+        Stat --> Player[Player Controller]
+        Relic --> Aura[Sensor Aura Buff Component]
     end
 ```
 

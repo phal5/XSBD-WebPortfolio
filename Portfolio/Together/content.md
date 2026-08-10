@@ -32,10 +32,13 @@ XSBD에서 경희대학교 예술디자인대학교 디지털콘텐츠학과 교
 
 ```mermaid
 graph TD
-    subgraph "기획자 친화적(No-Code) 자동화 파이프라인 및 개발 오버헤드 감소"
-        Tool[ExecuteInEditMode 자동화 스크립트<br/>반복적인 Collider/Trigger 씬 세팅 시간 제거] --> UI[No-Code 대화 인스펙터]
-        UI --> UnityEvent[UnityEvent 바인딩<br/>프로그래머 개입 없는 컷씬/이벤트 전환]
-        Event --> AI[거리 기반 3단계 캡슐화 AI<br/>추적/공격/후퇴 패턴 모듈화]
+    subgraph "No-Code Authoring & Automation"
+        Editor[ExecuteInEditMode Automation Tool] --> Dialogue[No-Code Dialogue Inspector]
+        Dialogue -->|UnityEvent| Event[Scene Transition & Item Event]
+    end
+    subgraph "Gameplay Engine"
+        Event --> Movement[Player Movement & Stats]
+        Event --> AI[3-Stage Enemy AI: Chase -> Attack -> Retreat]
     end
 ```
 

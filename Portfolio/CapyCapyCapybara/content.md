@@ -34,10 +34,14 @@ XSBD의 두 번째 인하우스 프로젝트로서 다양한 컨텐츠와 복잡
 
 ```mermaid
 graph TD
-    subgraph "다중 플랫폼 입력 및 네이티브 햅틱 시스템 설계"
-        Input[Unity New Input System] --> Wrapper[CapybaraInputReader<br/>PC/콘솔 통합 C# 이벤트 추상화 래퍼]
-        Wrapper --> Physics[SmoothDamp 기반 물리 컨트롤러<br/>프레임 드롭 시 안정적인 Rigidbody 제어]
-        Wrapper --> DLL[Native DLL 햅틱 통신 매니저<br/>PS5 DualSense 진동 API 다이렉트 제어]
+    subgraph "Input & Event Layer"
+        Input[Unity New Input System] --> Reader[CapybaraInputReader C# Event Wrapper]
+        Reader --> Controller[CapybaraController Rigidbody Mover]
+    end
+    subgraph "Action & Engine Integration"
+        Controller -->|Physics| Smooth[SmoothDamp Camera Controller]
+        Controller -->|Native DLL| Haptics[DualSense Native Haptics Manager]
+        Controller -->|Timeline| Director[PlayableDirector Cinematic System]
     end
 ```
 
