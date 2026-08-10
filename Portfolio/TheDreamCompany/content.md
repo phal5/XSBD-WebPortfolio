@@ -49,3 +49,7 @@ graph TD
 ## 개발 후기
 
 외부 노드 툴의 한계를 '디렉토리 기반 트리 구조'라는 창의적인 역발상으로 극복하고, 에디터 오토메이션 및 영상 연출 로직까지 직접 결합하여 한정된 자원 속에서 최적의 개발 파이프라인을 완성해 본 뜻깊은 개발 경험이었습니다.
+
+## 시연 영상 및 관련 링크
+
+* 🎬 [[XSBD 경희대 디지털콘텐츠학과 졸업작품 지원 프로젝트] The Dream Company](https://www.youtube.com/watch?v=zLXvBqoZppg&list=PLzVGLyH55Udv9upnJZ8MDjo0WAVM6x2_-&index=6)
